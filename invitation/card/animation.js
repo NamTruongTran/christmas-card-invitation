@@ -1,10 +1,10 @@
 
-(function() {
+(function () {
     'use strict';
 
     // Supabase Configuration
-    const SUPABASE_URL = 'https://wmbucfrspxxrbmafygvx.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnVjZnJzcHh4cmJtYWZ5Z3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjE5MzMsImV4cCI6MjA3ODczNzkzM30.NcmT9seEx5B1jiLaEwyiPPtiRU8PWyhRBD0p0-Klxwo';
+    const SUPABASE_URL = 'https://wgbgysivohhmdbwgmmkg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnYmd5c2l2b2hobWRid2dtbWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1Nzg4MjAsImV4cCI6MjA4MDE1NDgyMH0.nre08vOjjLhoQM_wNALIRSmOGxBNp3872dJxUvIFS70';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const timeScale = 1.5; // 1.5
@@ -118,11 +118,11 @@
         };
 
         return {
-            lightest: lighten(0.15),    
-            light: lighten(0.05),        
-            base: baseColor,             
-            medium: darken(0.1),         
-            dark: darken(0.2)            
+            lightest: lighten(0.15),
+            light: lighten(0.05),
+            base: baseColor,
+            medium: darken(0.1),
+            dark: darken(0.2)
         };
     }
 
@@ -165,11 +165,11 @@
         if (cardBackContent) {
             const message = friend.customBackMessage || globalSettings.cardBackMessage || 'I wish you all the best for the future.';
             const formattedMessage = message.replace(/\n/g, '<br>');
-            
+
             // Get signatures (friend-specific or global)
             const sig1 = friend.signature1 || globalSettings.signature1;
             const sig2 = friend.signature2 || globalSettings.signature2;
-            
+
             // Build signatures HTML
             let signaturesHTML = '';
             if (sig1 || sig2) {
@@ -179,7 +179,7 @@
                 if (sig2) signaturesHTML += `<div class="card-signature"><img src="${sig2}" alt="Signature 2" /></div>`;
                 signaturesHTML += '</div>';
             }
-            
+
             cardBackContent.innerHTML = `<p>${formattedMessage}</p>${signaturesHTML}`;
         }
 
@@ -197,22 +197,22 @@
             document.querySelector('.envelope_front').style.backgroundImage = `url('${frontSvgUrl}')`;
 
             const backColorMap = {
-                '#DFC49F': shades.light,     
-                '#D5BC96': shades.medium,    
-                '#E7CDA8': shades.base       
+                '#DFC49F': shades.light,
+                '#D5BC96': shades.medium,
+                '#E7CDA8': shades.base
             };
             const backSvgUrl = await loadAndColorSVG('images/envelope_back.svg', backColorMap);
             document.querySelector('.envelope_back_outside').style.backgroundImage = `url('${backSvgUrl}')`;
 
             const flapClosedColorMap = {
-                '#D5BC96': shades.medium     
+                '#D5BC96': shades.medium
             };
             const flapClosedUrl = await loadAndColorSVG('images/flap_closed.svg', flapClosedColorMap);
             document.querySelector('.flap_outside').style.backgroundImage = `url('${flapClosedUrl}')`;
 
             const flapOpenedColorMap = {
-                '#CEB38B': shades.medium,    
-                '#efefef': shades.lightest   
+                '#CEB38B': shades.medium,
+                '#efefef': shades.lightest
             };
             const flapOpenedUrl = await loadAndColorSVG('images/flap_opened.svg', flapOpenedColorMap);
             document.querySelector('.flap_inside').style.backgroundImage = `url('${flapOpenedUrl}')`;
@@ -248,7 +248,7 @@
             if (cardTitle) {
                 cardTitle.style.color = titleColor;
             }
-            
+
             const cardSender = document.querySelector('.card-sender');
             if (cardSender) {
                 cardSender.style.color = titleColor;
@@ -288,32 +288,32 @@
         const cardFront = card.querySelector(".card-front");
         const cardBack = card.querySelector('.card-back');
         const cardBackContent = card.querySelector('.card-back-content');
-        
+
         if (!cardBack || !cardBackContent) return;
         // Get the actual content height needed
         const contentHeight = cardBackContent.scrollHeight;
         // Get the available card-back height (100% of card)
         const cardBackHeight = cardFront.clientHeight;
-        
+
         // Calculate if we need more space (add padding buffer + extra 20% for signatures)
         const paddingBuffer = 80;
         const extraSpaceForSignatures = Math.min(window.innerWidth, window.innerHeight) * 0.05; // 20% extra
         const requiredHeight = contentHeight + paddingBuffer + extraSpaceForSignatures;
-        
+
         // Calculate how much we need to grow (as a ratio)
         const growthRatio = requiredHeight / cardBackHeight;
-        
+
         // Card-back is 100% by default, increase it proportionally
         const currentHeightPercent = 100;
         const newHeightPercent = Math.max(currentHeightPercent, currentHeightPercent * growthRatio);
-        
+
         // Calculate how much extra height we're adding
         const heightIncrease = newHeightPercent - currentHeightPercent;
-        
+
         // Calculate new top position to keep centered (move up by half the increase)
         // Card-back starts at top: 0
         const newTopPercent = -(heightIncrease / 2);
-        
+
         // Apply new dimensions to card-back only (CSS transition handles smoothness)
         cardBack.style.height = `${newHeightPercent}%`;
     }
@@ -353,11 +353,11 @@
         setTimeout(() => {
             const card = document.querySelector('.card');
             card.classList.add('flipped');
-            
+
             // Adjust card height after flip completes
             setTimeout(() => {
                 adjustCardHeightForContent(card);
-                
+
                 // Show flip-to-front button after height adjustment
                 setTimeout(() => {
                     const flipToFrontButton = document.querySelector('.flip-to-front');
@@ -373,11 +373,11 @@
         }, scaledTime(18300));
     }
 
-    window.restartAnimation = function() {
+    window.restartAnimation = function () {
         location.reload();
     };
 
-    window.getTimeScale = function() {
+    window.getTimeScale = function () {
         return timeScale;
     };
 
@@ -389,13 +389,13 @@
             const card = document.querySelector('.card');
             if (card && card.classList.contains('flipped')) {
                 const cardBack = card.querySelector('.card-back');
-                
+
                 // Reset inline styles first
                 if (cardBack) {
                     cardBack.style.height = '';
                     cardBack.style.top = '';
                 }
-                
+
                 // Recalculate multiple times to ensure accurate measurement after reflow
                 requestAnimationFrame(() => {
                     adjustCardHeightForContent(card);
@@ -410,17 +410,17 @@
         flipToBackButton.addEventListener('click', () => {
             const card = document.querySelector('.card');
             const flipToFrontButton = document.querySelector('.flip-to-front');
-            
+
             // Fade out this button
             flipToBackButton.classList.remove('visible');
-            
+
             // Flip to back
             card.classList.add('flipped');
-            
+
             // Adjust height after flip completes
             setTimeout(() => {
                 adjustCardHeightForContent(card);
-                
+
                 // Show flip-to-front button after height adjustment
                 setTimeout(() => {
                     if (flipToFrontButton) {
@@ -430,7 +430,7 @@
             }, 1000); // Wait for flip animation
         });
     }
-    
+
     // Handle flip-to-front button (on card back)
     const flipToFrontButton = document.querySelector('.flip-to-front');
     if (flipToFrontButton) {
@@ -438,23 +438,23 @@
             const card = document.querySelector('.card');
             const cardBack = card.querySelector('.card-back');
             const flipToBackButton = document.querySelector('.flip-to-back');
-            
+
             // Fade out this button
             flipToFrontButton.classList.remove('visible');
-            
+
             // Remove zoomed class to keep scale at 1
             card.classList.remove('zoomed');
-            
+
             // Reset height to 100% before flipping to front
             if (cardBack) {
                 cardBack.style.height = '';
                 cardBack.style.top = '';
             }
-            
+
             // Wait for height transition, then flip
             setTimeout(() => {
                 card.classList.remove('flipped');
-                
+
                 // Show flip-to-back button after flip animation
                 setTimeout(() => {
                     if (flipToBackButton) {

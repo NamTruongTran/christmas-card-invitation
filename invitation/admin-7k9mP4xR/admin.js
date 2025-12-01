@@ -1,6 +1,6 @@
 // Supabase Configuration
-const SUPABASE_URL = 'https://wmbucfrspxxrbmafygvx.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYnVjZnJzcHh4cmJtYWZ5Z3Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjE5MzMsImV4cCI6MjA3ODczNzkzM30.NcmT9seEx5B1jiLaEwyiPPtiRU8PWyhRBD0p0-Klxwo';
+const SUPABASE_URL = 'https://wgbgysivohhmdbwgmmkg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnYmd5c2l2b2hobWRid2dtbWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1Nzg4MjAsImV4cCI6MjA4MDE1NDgyMH0.nre08vOjjLhoQM_wNALIRSmOGxBNp3872dJxUvIFS70';
 
 // Initialize Supabase client
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Authentication Functions
 async function checkAuthAndInitialize() {
     const { data: { session }, error } = await supabaseClient.auth.getSession();
-    
+
     if (session) {
         // User is logged in - show admin app
         showAdminApp();
@@ -42,7 +42,7 @@ async function checkAuthAndInitialize() {
 function showLoginScreen() {
     document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('adminApp').style.display = 'none';
-    
+
     // Setup login form handler
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
 }
@@ -54,29 +54,29 @@ function showAdminApp() {
 
 async function handleLogin(e) {
     e.preventDefault();
-    
+
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     const loginBtn = document.getElementById('loginBtn');
     const loginError = document.getElementById('loginError');
-    
+
     // Reset error
     loginError.style.display = 'none';
     loginBtn.disabled = true;
     loginBtn.textContent = 'Logging in...';
-    
+
     try {
         const { data, error } = await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password
         });
-        
+
         if (error) throw error;
-        
+
         // Login successful - show admin app
         showAdminApp();
         initializeApp();
-        
+
     } catch (error) {
         console.error('Login failed:', error);
         loginError.textContent = error.message || 'Invalid email or password';
@@ -90,7 +90,7 @@ async function logout() {
     if (!confirm('Are you sure you want to logout?')) {
         return;
     }
-    
+
     try {
         await supabaseClient.auth.signOut();
         // Redirect to landing page
@@ -132,7 +132,7 @@ function switchTab(tabName) {
         content.classList.remove('active');
     });
     document.getElementById(`tab-${tabName}`).classList.add('active');
-    
+
     if (window.innerWidth <= 768) {
         toggleMobileMenu();
     }
@@ -338,8 +338,8 @@ function renderLinksList() {
     }
 
     container.innerHTML = appState.friends.map((friend, index) => {
-        const code = friend.code || generateUniqueCode(); 
-        const url = `${baseUrl}?code=${code}`; 
+        const code = friend.code || generateUniqueCode();
+        const url = `${baseUrl}?code=${code}`;
 
         return `
             <div class="link-item">
@@ -500,7 +500,7 @@ async function saveEmailTemplate(index) {
     const htmlContent = editor.innerHTML;
 
     const friend = appState.friends[index];
-    
+
     try {
         const { error } = await supabaseClient
             .from('friends')
@@ -547,7 +547,7 @@ function copyEmailTemplate(index) {
     if (navigator.clipboard && navigator.clipboard.write) {
         const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
         const textBlob = new Blob([textContent], { type: 'text/plain' });
-        
+
         const clipboardItem = new ClipboardItem({
             'text/html': htmlBlob,
             'text/plain': textBlob
@@ -672,7 +672,7 @@ async function saveFriend() {
     const name = document.getElementById('friendName').value.trim();
 
     if (!name) {
-        return; 
+        return;
     }
 
     const editIndex = document.getElementById('editFriendIndex').value;
@@ -735,7 +735,7 @@ async function saveFriend() {
         } else {
             // Update existing friend
             const existingFriend = appState.friends[parseInt(editIndex)];
-            
+
             // Update public data
             const { error: friendError } = await supabaseClient
                 .from('friends')
@@ -784,7 +784,7 @@ async function saveFriend() {
 
 async function deleteFriend(index) {
     const friend = appState.friends[index];
-    
+
     if (!confirm(`Delete ${friend.name}?`)) {
         return;
     }
@@ -887,7 +887,7 @@ function generateUniqueCode() {
     const maxAttempts = 100;
 
     do {
-        code = Math.floor(1000 + Math.random() * 9000).toString(); 
+        code = Math.floor(1000 + Math.random() * 9000).toString();
         attempts++;
     } while (appState.friends.some(f => f.code === code) && attempts < maxAttempts);
 
